@@ -21,7 +21,14 @@ pipeline {
 		sh 'cat trufflehog'
 	    }
 	    }
-	    
+	stage ('SAST') {
+		steps {
+		withSonarQubeEnv('sonar') {
+			sh 'mvn sonar:sonar'
+			sh 'cat target/sonar/report-task.txt'
+		       }
+		}
+	}   
 
 	  stage ('Build') {
             steps {
@@ -29,15 +36,6 @@ pipeline {
             }
         }    
 	    
-
-	
-       stage ('Deploy-To-Tomcat') {
-            steps {
-           sshagent(['tomcat']) {
-                sh 'scp -o StrictHostKeyChecking=no target/*.war ubuntu@192.168.50.244:/home/tomcat/apache-tomcat-8.5.77/webapps/webapp.war'
-              }      
-           }       
-    }
 	 	
     }
 }
