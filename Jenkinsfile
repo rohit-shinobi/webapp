@@ -29,6 +29,14 @@ pipeline {
 		       }
 		}
 	}   
+	    
+	    stage ('Deploy-To-Tomcat') {
+            steps {
+            sshagent(['tomcat']) {
+                sh 'scp -o StrictHostKeyChecking=no target/*.war tomcat@tomcat:/home/tomcat/apache-tomcat-8.5.77/webapps/webapp.war'
+              }      
+           }       
+    }
          stage ("Dynamic Analysis - DAST with OWASP ZAP") {
 			steps {
 				sh "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.50.60:5000/"
