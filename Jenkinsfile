@@ -40,7 +40,7 @@ pipeline {
     }
          stage ("Dynamic Analysis - DAST with OWASP ZAP") {
 			steps {
-				sh "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.50.60:5000/"
+				sh "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.50.244:8080/"
 			}
 		
 		}
